@@ -44,6 +44,7 @@ var express_1 = __importDefault(require("express"));
 var mongoose_1 = require("mongoose");
 var cors_1 = __importDefault(require("cors"));
 var user_model_1 = require("./user.model");
+var path_1 = __importDefault(require("path"));
 var Server = /** @class */ (function () {
     function Server() {
         var _this = this;
@@ -76,7 +77,7 @@ var Server = /** @class */ (function () {
     }
     Server.prototype.routes = function () {
         var _this = this;
-        this.app.post("/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.app.post("/api", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var User;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -90,7 +91,7 @@ var Server = /** @class */ (function () {
                 }
             });
         }); });
-        this.app.get("/", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.app.get("/api", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -102,11 +103,11 @@ var Server = /** @class */ (function () {
                 }
             });
         }); });
-        this.app.put("/:id", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.app.put("/api/:id", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(req.boy);
+                        console.log(req.body);
                         return [4 /*yield*/, this.Model.findByIdAndUpdate(req.params.id, req.body)];
                     case 1:
                         _a.sent();
@@ -114,7 +115,7 @@ var Server = /** @class */ (function () {
                 }
             });
         }); });
-        this.app.delete('/:id', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.app.delete('/api/:id', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.Model.findByIdAndDelete(req.params.id)];
@@ -125,8 +126,12 @@ var Server = /** @class */ (function () {
                 }
             });
         }); });
+        this.app.use('*', function (req, res) {
+            res.sendFile(path_1.default.resolve("public/index.html"));
+        });
     };
     Server.prototype.cors = function () {
+        this.app.use(express_1.default.static("public"));
         this.app.use((0, cors_1.default)());
         this.app.use(express_1.default.json());
         this.app.use(express_1.default.urlencoded());

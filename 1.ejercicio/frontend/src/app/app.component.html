@@ -33,25 +33,24 @@
     </div>
 
 </div>
-<div class="overlay-container">
-    <div class="overlay">
 
-        <div class="overlay-panel overlay-right">
-            <h1>Hello, Friend!</h1>
-            <button class="ghost" id="signUp" (click)="getusers()">Reload</button>
-            <div *ngIf="users">
-                <div *ngFor="let user of users">
-                    {{user | json}}
 
-                    <input type="text" placeholder="Name" [value]="user.name" />
-                    <input type="email" placeholder="Email" [value]="user.email" />
-                    <input type="password" placeholder="Password" [value]="user.password" />
+<div *ngIf="usersData">
 
-                    <button (click)=delete(user)>Eliminar</button>
-                    <button (click)="update(user)">Actualizar</button>
+
+    <form [formGroup]="usersForm">
+        <div formArrayName="userArray">
+            <div *ngFor="let user of userArray.controls;let i =index">
+
+                <div [formGroup]="getGroupUser(i)">
+                    <input type="text" placeholder="Name" formControlName="name" />
+                    <input type="email" placeholder="Email" formControlName="email" />
+                    <input type="password" placeholder="Password" formControlName="password" />
+
+                    <button (click)=delete(i)>Eliminar</button>
+                    <button (click)="update(i)">Actualizar</button>
                 </div>
             </div>
-            <p>Enter your personal details and start journey with us</p>
         </div>
-    </div>
+    </form>
 </div>
